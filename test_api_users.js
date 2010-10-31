@@ -23,6 +23,7 @@ module.exports = testCase({
 		this.oaSettings = oaSettings;
 		this.urlGetVersion = "http://node.kliopa.net/node/api.js/users/getVersion.json";
 		this.urlGetUserInfo = "http://node.kliopa.net/node/api.js/users/getUserInfo.json";
+		this.urlCurrentUserInfo = "http://node.kliopa.net/node/api.js/users/getCurrentUserInfo.json";
 	},
 	
 	testOA: function(test) {
@@ -57,6 +58,18 @@ module.exports = testCase({
 			test.done();
 		});
 	},
+	
+	testOACurrentUserInfo: function(test) {
+        test.expect(2);
+        var oaSet = this.oaSettings,
+            result = this.result;
+        this.oa.get( this.urlCurrentUserInfo, oaSet.access_token, oaSet.access_token_secret,  function (error, data, response) {
+            var res = !error ? JSON.parse(data) : null;
+            test.ok(!error, "Server send error back");
+            test.equal(res.loginName, "crazygoogle", "returned data is not same as expected");
+            test.done();
+		});
+    }
 });
 
 })();
